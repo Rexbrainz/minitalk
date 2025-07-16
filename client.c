@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 06:56:44 by sudaniel          #+#    #+#             */
-/*   Updated: 2024/11/15 10:02:49 by sudaniel         ###   ########.fr       */
+/*   Updated: 2024/11/19 06:17:50 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,22 @@ static void	acknowledge(int signum, siginfo_t *info, void *context)
 		write(1, "Bit 0 received.\n", 16);
 }
 
+static void	error(char *error_message)
+{
+	ft_printf(error_message);
+	exit(EXIT_FAILURE);
+}
+
 int	main(int argc, char **argv)
 {
 	int					pid;
 	struct sigaction	sigact;
 
+	if (argc != 3)
+		error("Error: Argument count must be 3.\n");
 	pid = ft_atoi(argv[1]);
-	if (argc != 3 || pid <= 0)
-	{
-		ft_printf("Error!\nCheck Inputs, PID and arguments count\n");
-		return (0);
-	}
+	if (pid <= 0)
+		error("Error: Invalid PID.\n");
 	sigact.sa_sigaction = acknowledge;
 	sigact.sa_flags = 0;
 	sigemptyset(&sigact.sa_mask);
